@@ -1,7 +1,7 @@
 # paxix
 Paxi Extended. A toy programming language project. 
 
-The Language
+##The Language
 
 Paxi is a simple programming language intended for a compiler writing project at George Mason University. It supplies minimal but representative programming facilities and is designed for ease of implementation.
 The canonical "Hello, world!" program looks like this in Paxi:
