@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -173,7 +173,7 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
 #line 38 "paxi_parser.y" /* yacc.c:355  */
@@ -184,6 +184,8 @@ union YYSTYPE
 
 #line 186 "paxi_parser.tab.c" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -197,7 +199,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 201 "paxi_parser.tab.c" /* yacc.c:358  */
+#line 203 "paxi_parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -1415,7 +1417,7 @@ yyreduce:
 				yyerror("Variable defined earlier in program");
 			}	
 		}
-#line 1419 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1421 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1428,7 +1430,7 @@ yyreduce:
 				yyerror("Variable defined earlier in program");
 			}
 		}
-#line 1432 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1434 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
@@ -1441,7 +1443,7 @@ yyreduce:
 				yyerror("Array identifier defined earlier in program");	
 			}
 		}
-#line 1445 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1447 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
@@ -1463,7 +1465,7 @@ yyreduce:
 				entry_point = cs_pointer;
 			}
 		}
-#line 1467 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1469 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -1482,7 +1484,7 @@ yyreduce:
 			emit(8, 1, 0);
 					
 		}
-#line 1486 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1488 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -1490,7 +1492,7 @@ yyreduce:
     {
 			emit(10, 0, -local_ctr);
 		}
-#line 1494 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1496 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
@@ -1505,7 +1507,7 @@ yyreduce:
 			emit(10, 0, local_ctr);
 			emit(28, 1, 0);
 		}
-#line 1509 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1511 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
@@ -1520,7 +1522,7 @@ yyreduce:
 				emit(35, param_ctr, 0);	
 			}
 		}
-#line 1524 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1526 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
@@ -1530,7 +1532,7 @@ yyreduce:
 			char* mangled_param = mangle(proc_name, (yyvsp[0].strval));
 			insert(mangled_param, "parameter", 1, ++param_ctr);
 		}
-#line 1534 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1536 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
@@ -1539,7 +1541,7 @@ yyreduce:
 			char* mangled_param = mangle(proc_name, (yyvsp[0].strval));
 			insert(mangled_param, "parameter", 1, ++param_ctr);
 		}
-#line 1543 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1545 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
@@ -1549,7 +1551,7 @@ yyreduce:
 			char* mangled_param = mangle(proc_name, (yyvsp[0].strval));
 			insert(mangled_param, "local_variable", 1, ++local_ctr);	
 		}
-#line 1553 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1555 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
@@ -1558,7 +1560,7 @@ yyreduce:
 			char* mangled_param = mangle(proc_name, (yyvsp[0].strval));
 			insert(mangled_param, "local_variable", 1, ++local_ctr);
 		}
-#line 1562 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1564 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
@@ -1570,7 +1572,7 @@ yyreduce:
 		emit(27, 501, 0);
 		emit(4, 501, 500); 
 	    }
-#line 1574 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1576 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
@@ -1581,7 +1583,7 @@ yyreduce:
 		(yyvsp[0].ival) = cs_pointer; //save address for backpatching
 		emit(999, 999, 999); // emit dummy instuction for backpatching
              }
-#line 1585 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1587 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
@@ -1592,7 +1594,7 @@ yyreduce:
 		//if boolean_expression is false, jump here
 		backpatch((yyvsp[-2].ival), 18, cs_pointer, 500); 
 	     }
-#line 1596 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1598 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
@@ -1601,7 +1603,7 @@ yyreduce:
 		//jump over the else if boolean_expression is true
              	backpatch((yyvsp[-2].ival), 17, cs_pointer, 0);
 	     }
-#line 1605 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1607 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
@@ -1610,7 +1612,7 @@ yyreduce:
 		//save start location of loop
 	    	(yyvsp[0].ival) = cs_pointer;
 	    }
-#line 1614 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1616 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
@@ -1620,7 +1622,7 @@ yyreduce:
 		(yyvsp[0].ival) = cs_pointer;
 		emit(999, 999, 999);	    
 	    }
-#line 1624 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1626 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
@@ -1631,7 +1633,7 @@ yyreduce:
 		//if boolean_expression is true, keep looping
 		emit(17, (yyvsp[-4].ival), 0);
             }
-#line 1635 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1637 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
@@ -1640,7 +1642,7 @@ yyreduce:
 		//save beginning of loop
 	 	(yyvsp[0].ival) = cs_pointer;
 	 }
-#line 1644 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1646 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
@@ -1652,7 +1654,7 @@ yyreduce:
 		//if boolean_expression is true keep looping
 		emit(17, (yyvsp[-5].ival), 0);
 	 }
-#line 1656 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1658 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
@@ -1679,7 +1681,7 @@ yyreduce:
 	//emmiting call instruction
       	//emit(34, entry->location, 0);
       }
-#line 1683 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1685 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
@@ -1688,7 +1690,7 @@ yyreduce:
 		 // pop top of stack into Register 2
 		emit(28, 2, 0);
 	      }
-#line 1692 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1694 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
@@ -1696,7 +1698,7 @@ yyreduce:
     {
 				(yyval.ival) = (yyvsp[0].ival);
 			}
-#line 1700 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1702 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
@@ -1704,7 +1706,7 @@ yyreduce:
     { 
 				(yyval.ival) = 0;
 			}
-#line 1708 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1710 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
@@ -1712,7 +1714,7 @@ yyreduce:
     {
 			(yyval.ival) = (yyvsp[-2].ival) + 1;
 		}
-#line 1716 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1718 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
@@ -1720,7 +1722,7 @@ yyreduce:
     {
 			(yyval.ival) = 1;
 		}
-#line 1724 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1726 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
@@ -1731,7 +1733,7 @@ yyreduce:
 		emit(3, 500, 500);
 		emit(24, 500, 0); 
 	  }
-#line 1735 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1737 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
@@ -1739,7 +1741,7 @@ yyreduce:
     {
 	  	emit(26, (yyvsp[0].ival), 0);
 	  }
-#line 1743 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1745 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
@@ -1748,7 +1750,7 @@ yyreduce:
 		// push the value in register 2 onto stack
 		emit(25, 2, 0);
 	  }
-#line 1752 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1754 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
@@ -1756,7 +1758,7 @@ yyreduce:
     {
 	  	emit(26, (yyvsp[0].ival), 0);
 	  }
-#line 1760 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1762 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
@@ -1813,7 +1815,7 @@ yyreduce:
 		//printf("%s\n", $<strval>1);
 		free((yyvsp[0].strval));		
 	  }
-#line 1817 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1819 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
@@ -1834,7 +1836,7 @@ yyreduce:
 			yyerror("Attempt to access undelcared array");
 		}
 	  }
-#line 1838 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1840 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
@@ -1849,7 +1851,7 @@ yyreduce:
 		emit(24, 500, 0);
 		
 	  }
-#line 1853 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1855 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
@@ -1862,7 +1864,7 @@ yyreduce:
 			emit(4, 500, 501);
 	
 		}
-#line 1866 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1868 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
@@ -1882,7 +1884,7 @@ yyreduce:
                                 yyerror("Attempt to access undelcared array");
                         }		
 		}
-#line 1886 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1888 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
@@ -1891,7 +1893,7 @@ yyreduce:
 		 	emit(27, 500, 0);
 			emit(29, 500, 0);
 		 }
-#line 1895 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1897 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
@@ -1900,7 +1902,7 @@ yyreduce:
 			emit(30, (next_avail + string_space), 0);
 			string_space += ((yyvsp[0].ival) - 1);	 
 		 }
-#line 1904 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1906 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
@@ -1922,7 +1924,7 @@ yyreduce:
                 	}
 		
 		 }
-#line 1926 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1928 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
@@ -1930,7 +1932,7 @@ yyreduce:
     {
 			emit(31, 0, 0);
 		}
-#line 1934 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1936 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
@@ -1947,7 +1949,7 @@ yyreduce:
 				emit(24, 500, 0);
 			
 		       }
-#line 1951 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1953 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
@@ -1963,7 +1965,7 @@ yyreduce:
                         }
 			emit(24, 500, 0);
 		 }
-#line 1967 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1969 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
@@ -1971,7 +1973,7 @@ yyreduce:
     {
 		(yyval.ival) = ADD_TOKEN;
 	      }
-#line 1975 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1977 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
@@ -1979,7 +1981,7 @@ yyreduce:
     {
 	      	(yyval.ival) = SUBTRACT_TOKEN;
               }
-#line 1983 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1985 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
@@ -1987,7 +1989,7 @@ yyreduce:
     {
                	(yyval.ival) = MULT_TOKEN;
 	       }
-#line 1991 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 1993 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
@@ -1995,7 +1997,7 @@ yyreduce:
     {
                	(yyval.ival) = DIV_TOKEN;
 	       }
-#line 1999 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2001 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
@@ -2008,7 +2010,7 @@ yyreduce:
 			emit(14, 500, 501);
 			emit(24, 500, 0);
 		    }
-#line 2012 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2014 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
@@ -2021,7 +2023,7 @@ yyreduce:
 			emit(15, 500, 501);
 			emit(24, 500, 0); 
 		}
-#line 2025 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2027 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
@@ -2033,7 +2035,7 @@ yyreduce:
 			emit(16, 500, 0);
 			emit(24, 500, 0);
 		}
-#line 2037 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2039 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
@@ -2049,7 +2051,7 @@ yyreduce:
 			emit(17, cs_pointer+6, 0); // jump 2 lines
 			emit(26, 1, 0);	// push 1 for true
 		}
-#line 2053 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2055 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
@@ -2058,7 +2060,7 @@ yyreduce:
 				//Using parse stack to pass up opcodes
 				(yyval.ival) = 18;
 			}
-#line 2062 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2064 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
@@ -2066,7 +2068,7 @@ yyreduce:
     {
 				(yyval.ival) = 22;
 			}
-#line 2070 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2072 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
@@ -2074,7 +2076,7 @@ yyreduce:
     {
 				(yyval.ival) = 23;
 			}
-#line 2078 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2080 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
@@ -2082,7 +2084,7 @@ yyreduce:
     {
 				(yyval.ival) = 20;
 			}
-#line 2086 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2088 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
@@ -2090,7 +2092,7 @@ yyreduce:
     {
 				(yyval.ival) = 21;
 			}
-#line 2094 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2096 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
@@ -2098,11 +2100,11 @@ yyreduce:
     {
 				(yyval.ival) = 19;
 			}
-#line 2102 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2104 "paxi_parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2106 "paxi_parser.tab.c" /* yacc.c:1646  */
+#line 2108 "paxi_parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
