@@ -63,26 +63,12 @@ int input_integer;
 		}
 
 \".*\"		{
-			//TODO: Refactor
-			/*
-				Get yytext length
-				set yylval.ival = length
-				create a new string of that length
-					
-			*/
 
-			int i, len = 0;
-			while(*(yytext + len) != '\0'){
-				len++;
-			}
-			yylval.ival = len;
+			int len = yylval.ival = strlen(yytext);
 			//creating new string because yytext gets rewritten to
-			char* input_string = malloc(sizeof(char)*len);
-			strcpy(input_string, yytext);
-			//removing first quote by advancing pointer	
-			input_string++;
-			//removing second quote by replacing " with \0
-			*(input_string + (len-2)) = '\0';
+			char* input_string = malloc(sizeof(char) * len);
+			strncpy(input_string, ++yytext, len - 2);
+		
 			add_string(input_string);
 			return STRING_TOKEN;
 		}
