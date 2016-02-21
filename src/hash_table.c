@@ -1,5 +1,5 @@
 #include "hash_table.h"
-
+#include <string.h>
 hash_table_t* hash_table = NULL;
 
 // Creates a new hash_table with 'size' entries

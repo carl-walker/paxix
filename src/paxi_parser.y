@@ -22,7 +22,7 @@ char* mangle(char* proc, char* var);
 void emit(int opcode, int arg1, int arg2);
 void backpatch(int address, int opcode, int arg1, int arg2);
 void yyerror(char *str);
-
+int yylex();
 %}
 
 %token ID_TOKEN INT_TOKEN STRING_TOKEN CHAR_TOKEN NEWLINE_TOKEN WHITESPACE_TOKEN
