@@ -75,7 +75,6 @@ int insert(char* name, char* type, int size, int location){
 	
 	//bucket is non-empty, search synonym chain for identifier
 	symtab_entry_t* existing_entry = hash_table->table[bucket];
-	//TODO: refactor this block of code
 	while(existing_entry->next != NULL){
 		if(!strcmp(existing_entry->name, entry->name)){
 			//printf("Entry already exists\n");

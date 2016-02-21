@@ -52,9 +52,6 @@ int input_integer;
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
 			yylval.strval = malloc(sizeof(yytext+1));
-			strcpy(yylval.strval, yytext);
-			//strdup(yytext);
-			//yylval.strval = yytext;
 			return ID_TOKEN;
 			}
 
@@ -65,6 +62,14 @@ int input_integer;
 		}
 
 \".*\"		{
+			//TODO: Refactor
+			/*
+				Get yytext length
+				set yylval.ival = length
+				create a new string of that length
+					
+			*/
+
 			int i, len = 0;
 			while(*(yytext + len) != '\0'){
 				len++;

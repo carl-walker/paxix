@@ -15,6 +15,7 @@ int next_avail = 510;
 int string_space = 0;
 int entry_point = 0;
 
+//TODO: Refactor main to series of function calls
 int main(int argc, char** argv){
 
 	if(argc < 2){
