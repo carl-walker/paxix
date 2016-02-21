@@ -1,0 +1,190 @@
+array 24 posts;     // 3 posts, <= 8 rings on a post
+array 3 RingCount;  // # of rings on each post
+array 10 response;
+var StartPost, EndPost, status;
+
+// ********************************************************
+
+proc init()
+// clear posts and status
+var i;
+   i = 0;
+   while (i < 24) 
+      posts[i] = 0;
+      i = i + 1;
+   endwhile;   
+   i = 0;
+   while (i < 3) 
+      RingCount[i] = 0;
+      i = i + 1;
+   endwhile;
+   status = 'r';          // "run continuously" is off
+endproc
+
+// ********************************************************
+
+proc DrawRing(size)
+// draw one ring from current cursor position
+var k;
+var width;
+   if (size > 0) 
+      k = 8 - size;
+      while (k > 0)         // spaces preceding ring
+         writestr(" ");
+         k = k - 1;
+      endwhile;
+      width = 2 * size + 1;  // width of ring
+      while (width > 0)         // draw the ring
+         writestr("O");
+         width = width - 1;
+      endwhile;
+      k = 8 - size;
+      while (k > 0)         // spaces following ring
+         writestr(" ");
+         k = k - 1;
+      endwhile;
+   else     // empty place on post
+      writestr("        |        ");
+   endif;
+endproc
+
+// ********************************************************
+
+proc LeftMargin()
+// display 12 spaces for left margin
+   writestr("            ");
+endproc
+
+// ********************************************************
+
+proc DrawLine(zero, one, two)
+// display rings at a fixed level above base
+   LeftMargin();
+   DrawRing(zero);      // ring on post zero
+   writestr(" ");              // space between posts
+   DrawRing(one);      // ring on post one
+   writestr(" ");              // space between posts
+   DrawRing(two);      // ring on first two
+endproc
+
+// ********************************************************
+
+proc DrawBase()
+   LeftMargin();
+   writestr("=====================================================");
+endproc
+
+// ********************************************************
+
+proc DrawPosts()
+// display all posts with their rings
+var k;
+   line;
+   DrawLine(0, 0, 0);  // posts stick one row above rings
+   line;
+   k = 7;      // top row which can be occupied;
+   while (k >= 0)   // draw rings for this row
+      DrawLine(posts[k], posts[8 + k], posts[16 + k]);
+      k = k - 1;   // next level down
+      line;
+   endwhile;
+   DrawBase();
+   line;  line;
+endproc
+
+// ********************************************************
+
+proc MoveDisk(from, to)
+// move a disk by adjusting posts and RingCount arrays
+var r;
+   r = posts[8 * from + RingCount[from] - 1];
+   // take ring from "moved from post"
+   posts[8 * from + RingCount[from] - 1] = 0; // remove ring
+   RingCount[from] = RingCount[from] - 1;
+   // place ring on "moved to post"
+   posts[8 * to + RingCount[to]] = r;
+   RingCount[to] = RingCount[to] + 1;
+endproc
+
+// ********************************************************
+
+proc AskAndSetUp()
+// get starting and ending post and number of rings
+// from user and initialize arrays
+var ringnum;
+var k;
+   // get number of rings
+   ringnum = 0;
+   while (ringnum < 1) or (ringnum > 8) 
+      writestr("Number of rings (1 - 8):  ");
+      read(ringnum);
+   endwhile;
+   // get number of starting post
+   do
+      writestr("Starting post: (0 - 2):  ");
+      read(StartPost);
+   endo while (StartPost < 0) or (StartPost > 2);
+   // get number of ending post
+   do
+      writestr("Ending post: (0 - 2):  ");
+      read(EndPost);
+      if (EndPost = StartPost) 
+         writestr("Starting and ending posts must be different");
+         line;
+         EndPost = 3;  // put illegal value in EndPost;
+      endif;
+   endo while (EndPost < 0) or (EndPost > 2);
+   line;
+   // initialize:  put rings on start post
+   k = 0;
+   while (k < ringnum) 
+      // write ring size into its position in posts array
+      posts[8 * StartPost + k] = ringnum - k;
+      k = k + 1;
+   endwhile;
+   RingCount[StartPost] = ringnum;
+endproc
+
+// ********************************************************
+
+proc continue()
+// is the user bored yet?
+   do
+      writestr("Enter:   r to move next ring");  line;
+      writestr("         c to run continuously");  line;
+      writestr("         q to quit.");  line;
+      writestr(" ->  ");
+      readstr(response);
+   endo while (response[0] # 'r') and (response[0] # 'c')
+         and (response[0] # 'q');
+   retval response[0];
+   line;
+endproc
+
+// ********************************************************
+
+proc hanoi(from, to, used, NumToMove)
+// main recursive procedure of the program
+   if (NumToMove > 0) and (status # 'q')
+      hanoi(from, used, to, NumToMove - 1);
+      if (status = 'r')            // not set to run continuously
+         status = continue();
+      endif;
+      if (status = 'c') or (status = 'r')
+         MoveDisk(from, to);
+         DrawPosts();       // display
+      endif;
+      hanoi(used, to, from, NumToMove - 1);
+   endif;
+endproc
+
+// ********************************************************
+
+proc main()
+   init();
+   AskAndSetUp();
+   DrawPosts();           // show initial configuration
+   hanoi(StartPost, EndPost, 3 - (StartPost + EndPost),
+      RingCount[StartPost]);
+endproc
+

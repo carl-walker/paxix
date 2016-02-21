@@ -1,0 +1,10 @@
+var i;
+
+proc main()
+	i = 0;
+	do
+		write(i); line;
+		i = i + 1;
+	endo
+	while(i < 4);
+endproc
