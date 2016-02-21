@@ -1,7 +1,4 @@
-all: hash_table_driver paxic pvm
-
-hash_table_driver: hash_table_driver.o hash_table.o
-	gcc -o hash_table_driver hash_table_driver.o hash_table.o
+all:  paxic pvm
 
 paxic: paxic.o lex.yy.o paxi_parser.tab.o hash_table.o string_list.o
 	gcc -o paxic paxic.o lex.yy.o paxi_parser.tab.o hash_table.o string_list.o
