@@ -52,6 +52,7 @@ int input_integer;
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
 			yylval.strval = malloc(sizeof(yytext+1));
+			strcpy(yylval.strval, yytext);
 			return ID_TOKEN;
 			}
 
