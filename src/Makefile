@@ -1,7 +1,7 @@
 all:  paxic pvm
 
-paxic: paxic.o paxi_parser.tab.o lex.yy.o hash_table.o string_list.o
-	gcc -o paxic paxic.o paxi_parser.tab.o lex.yy.o hash_table.o string_list.o
+paxic: paxi_parser.tab.o lex.yy.o hash_table.o string_list.o paxic.o 
+	gcc -o paxic paxi_parser.tab.o lex.yy.o hash_table.o string_list.o paxic.o 
 	
 paxi_parser.tab.c: paxi_parser.y hash_table.o
 	bison -d paxi_parser.y

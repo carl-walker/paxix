@@ -87,7 +87,7 @@ char* mangle(char* proc, char* var);
 void emit(int opcode, int arg1, int arg2);
 void backpatch(int address, int opcode, int arg1, int arg2);
 void yyerror(char *str);
-
+int yylex();
 
 #line 93 "paxi_parser.tab.c" /* yacc.c:339  */
 
