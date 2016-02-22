@@ -8,7 +8,7 @@ extern FILE* yyin;
 FILE* output;
 extern char* yytext;
 extern string_list_t* string_list;
-extern struct hash_table_s* hash_table;
+extern struct symbol_table_s* symbol_table;
 int* code_store;
 int cs_pointer = 0;
 int next_avail = 510;

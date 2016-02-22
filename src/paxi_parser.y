@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "hash_table.h"
+#include "symbol_table.h"
 
 // Global Var declarations
 static int param_ctr = 0;

@@ -1,9 +1,9 @@
 all:  paxic pvm
 
-paxic: paxi_parser.tab.o lex.yy.o hash_table.o string_list.o paxic.o 
-	gcc -o paxic paxi_parser.tab.o lex.yy.o hash_table.o string_list.o paxic.o 
+paxic: paxi_parser.tab.o lex.yy.o symbol_table.o string_list.o paxic.o 
+	gcc -o paxic paxi_parser.tab.o lex.yy.o symbol_table.o string_list.o paxic.o 
 	
-paxi_parser.tab.c: paxi_parser.y hash_table.o
+paxi_parser.tab.c: paxi_parser.y symbol_table.o
 	bison -d paxi_parser.y
 
 pvm: pvm.o
@@ -16,4 +16,4 @@ lex.yy.c: paxi_scanner.l
 	flex paxi_scanner.l
 
 clean:
-	rm -f *.o  paxic pvm hash_table_driver 
+	rm -f *.o  paxic pvm symbol_table_driver 

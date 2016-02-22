@@ -1,31 +1,31 @@
-#include "hash_table.h"
+#include "symbol_table.h"
 #include <string.h>
-hash_table_t* hash_table = NULL;
+symbol_table_t* symbol_table = NULL;
 
-// Creates a new hash_table with 'size' entries
-hash_table_t* create_hash_table(int size){
+// Creates a new symbol_table with 'size' entries
+symbol_table_t* create_symbol_table(int size){
 	
 	int i;
 	//intitialize the struct which holds the information about the hashtable
-	hash_table = malloc(sizeof(hash_table_t));
+	symbol_table = malloc(sizeof(symbol_table_t));
 	
-	if(hash_table == NULL){
+	if(symbol_table == NULL){
 		printf("ERROR: UNABLE TO INITIALIZE HASH TABLE\n");
 		exit(1);
 	}
-	//intitialize the array of pointers which is the hash_table
-	hash_table->table = malloc(sizeof(symtab_entry_t*) * size);
+	//intitialize the array of pointers which is the symbol_table
+	symbol_table->table = malloc(sizeof(symtab_entry_t*) * size);
 
-	if(hash_table->table == NULL){
+	if(symbol_table->table == NULL){
 		printf("ERROR: UNABLE TO INITIALIZE HASH TABLE NODES\n");
 		exit(1);
 	}
 	//NULLing out table entries
 	for(i = 0; i < size; i++){
-		hash_table->table[i] = NULL;	
+		symbol_table->table[i] = NULL;	
 	}
-	hash_table->size = size;
-	return hash_table;
+	symbol_table->size = size;
+	return symbol_table;
 }
 
 //Function to create a symtab_entry given appropriate fields
@@ -42,7 +42,7 @@ symtab_entry_t* create_symtab_entry(char* name, char *type,
 }
 
 // Hash function for inserting into the hashtable
-uint32_t hash(char* identifier, int hash_table_size){
+uint32_t hash(char* identifier, int symbol_table_size){
 	uint32_t hash, len;
 	hash = len = 0;
 	while(identifier[len] != '\0'){
@@ -51,7 +51,7 @@ uint32_t hash(char* identifier, int hash_table_size){
         	hash ^= (hash >> 2);
 		len++;
 	}
-	hash = (hash % hash_table_size);
+	hash = (hash % symbol_table_size);
 	return hash;
 }
 
@@ -60,21 +60,21 @@ uint32_t hash(char* identifier, int hash_table_size){
 int insert(char* name, char* type, int size, int location){
 	
 	//create the hash table on first insert
-	if(hash_table == NULL){
-		hash_table = create_hash_table(9001);
+	if(symbol_table == NULL){
+		symbol_table = create_symbol_table(9001);
 	}
 		
 	symtab_entry_t* entry = create_symtab_entry(name, type, size, location);
-	uint32_t bucket = hash(entry->name, hash_table->size);
+	uint32_t bucket = hash(entry->name, symbol_table->size);
 	
 	//bucket is empty
-	if(hash_table->table[bucket] == NULL){;
-		hash_table->table[bucket] = entry;
+	if(symbol_table->table[bucket] == NULL){;
+		symbol_table->table[bucket] = entry;
 		return 0;
 	}
 	
 	//bucket is non-empty, search synonym chain for identifier
-	symtab_entry_t* existing_entry = hash_table->table[bucket];
+	symtab_entry_t* existing_entry = symbol_table->table[bucket];
 	while(existing_entry->next != NULL){
 		if(!strcmp(existing_entry->name, entry->name)){
 			//printf("Entry already exists\n");
@@ -95,16 +95,16 @@ int insert(char* name, char* type, int size, int location){
 //returns pointer to entry if found, else returns null. 
 symtab_entry_t* lookup(char* identifier){
 
-	if(hash_table == NULL){
+	if(symbol_table == NULL){
 		return NULL;
 	}
 	
-	uint32_t bucket = hash(identifier, hash_table->size);
+	uint32_t bucket = hash(identifier, symbol_table->size);
 	
-	if(hash_table->table[bucket] == NULL){
+	if(symbol_table->table[bucket] == NULL){
 		return NULL;
 	} 
-	symtab_entry_t* entry = hash_table->table[bucket];
+	symtab_entry_t* entry = symbol_table->table[bucket];
 	while(entry != NULL){
 		if(!strcmp(entry->name, identifier)){
 			return entry;
@@ -118,7 +118,7 @@ symtab_entry_t* lookup(char* identifier){
 //for testing purposes
 int print_bucket(int bucket){
 
-	symtab_entry_t* entry = hash_table->table[bucket];
+	symtab_entry_t* entry = symbol_table->table[bucket];
 	if(entry != NULL){
 		while(entry->next != NULL){
 			printf("{%s, %s, %d, %d} -> ",
@@ -134,10 +134,10 @@ int print_bucket(int bucket){
 //for testing purposes
 int print_symtab(){
 	int i;
-	if(hash_table == NULL){
+	if(symbol_table == NULL){
 		return 1;
 	}
-	for(i = 0; i < hash_table->size; i++){
+	for(i = 0; i < symbol_table->size; i++){
 		print_bucket(i);
 	}
 
