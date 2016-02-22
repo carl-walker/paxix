@@ -1,0 +1,8 @@
+# Ignore build artifacts.
+*.o
+*.tab.*
+*.yy.c
+
+# Ignore executables
+paxic
+pvm
