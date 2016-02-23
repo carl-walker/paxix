@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/carl-walker/paxix.svg?branch=master)](https://travis-ci.org/carl-walker/paxix)
+
 # paxix
 Paxi Extended. A toy programming language project. 
 
