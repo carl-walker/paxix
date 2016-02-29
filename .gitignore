@@ -1,4 +1,9 @@
-# Ignore build artifacts.
+#! Ignore auxiliary files
+*~
+*.log
+*.old
+
+# Ignore build artifacts
 *.o
 *.tab.*
 *.yy.c
@@ -6,3 +11,18 @@
 # Ignore executables
 paxic
 pvm
+
+#! Ignore build system files
+*.in
+*.deps
+autom4te.cache
+config.status
+config.log
+aclocal.m4
+compile
+depcomp
+install-sh
+missing
+stamp-h1
+ylwrap
+

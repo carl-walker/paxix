@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "string_list.h"
-#include "paxi_parser.tab.h"
+#include "paxi_parser.h"
 
 extern FILE* yyin;
 FILE* output;
