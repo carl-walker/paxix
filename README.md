@@ -8,11 +8,11 @@ To build the compiler, you will need autoconf, automake, and libtools
 
 Once you have those tools installed, follow the standard build process:
 
-automake --add-missing
-autoreconf
-./configure
-make
-make check
+	automake --add-missing
+	autoreconf
+	./configure
+	make
+	make check
 
 ## The Language
 
