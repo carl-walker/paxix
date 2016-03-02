@@ -3,6 +3,15 @@
 # paxix
 Paxi Extended. A toy programming language project. 
 
+## Quick Start Build
+To build the compiler, you will need autoconf, automake, and libtools
+
+Once you have those tools installed, follow the standard build process:
+
+./configure
+make
+make test
+
 ## The Language
 
 Paxi is a simple programming language intended for a compiler writing project at George Mason University. It supplies minimal but representative programming facilities and is designed for ease of implementation.
