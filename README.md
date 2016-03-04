@@ -6,10 +6,13 @@ Paxi Extended. A toy programming language project.
 ## Quick Start Build
 To build the compiler, you will need autoconf, automake, and libtools
 
-Once you have those tools installed, follow the standard build process:
+After installing those tools, configure the repository for first use:
 
 	autoreconf
 	automake --add-missing
+
+You are now ready to invoke the standard build process:
+
 	./configure
 	make
 	make check
