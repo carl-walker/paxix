@@ -2,7 +2,7 @@ language: c
 before_install:
    - sudo apt-get update -qq
    - sudo apt-get install -qq flex bison
-script: make
+script: autoconf && automake --add-missing && ./configure && make && make check
 compiler:
    - gcc
    - clang
