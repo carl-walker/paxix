@@ -1,5 +1,5 @@
 #! Flags passed to the compiler
-AM_CFLAGS = -Wpedantic -Wall -std=c99
+AM_CFLAGS = -Wall -std=c99
 AM_LDFLAGS = 
 AM_YFLAGS = -d -t
 AM_LFLAGS =
