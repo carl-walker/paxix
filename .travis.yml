@@ -6,7 +6,7 @@ before_script:
    - sudo add-apt-repository ppa:dns/gnu -y
    - sudo apt-get update -q
    - sudo apt-get install --only-upgrade autoconf
-script: aclocal && autoheader && automake --add-missing && autoreconf && ./configure && make && make check
+script: autoreconf --install && ./configure && make && make check
 compiler:
    - gcc
    - clang
