@@ -8,8 +8,7 @@ To build the compiler, you will need autoconf, automake, and libtools
 
 After installing those tools, configure the repository for first use:
 
-	autoreconf
-	automake --add-missing
+	autoreconf --install
 
 You are now ready to invoke the standard build process:
 
