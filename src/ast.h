@@ -51,4 +51,34 @@ struct array_node {
 	char* id;
 	int size;
 }
+
+/**
+ * A procedure is an ID associated with a list of params, locals, and statements.
+ */
+struct procedure_decl_node {
+	char* id;
+	struct formal_param_node** params;
+	struct local_decl_node** locals;
+	struct statement_node** statements;
+}
+
+/**
+ * A formal param tracks an identifier and an offset from SP.
+ */
+struct formal_param_node {
+	char* id;
+	int offset;
+}
+
+struct local_decl_node {
+	struct local_var_node** vars;
+}
+
+/**
+ * A local var is very similar to a parameter.
+ */
+struct local_var_node{
+	char* id;
+	int offset;
+}
 #endif
