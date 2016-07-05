@@ -115,13 +115,13 @@ procedure_decl: PROC_TOKEN ID_TOKEN
 			} 	
 			// push current frame pointer value 
 			// copy value of stack pointer to frame pointer
-			emit(25, 1, 0);
-			emit(8, 1, 0);
+			emit(e_pushr_op, 1, 0);
+			emit(e_mvr_op, 1, 0);
 					
 		}
 		RPAREN_TOKEN locals_list
 		{
-			emit(10, 0, -local_ctr);
+			emit(e_addri_op, 0, -local_ctr);
 		} 
 		statement_list 
 		{ 
@@ -131,18 +131,18 @@ procedure_decl: PROC_TOKEN ID_TOKEN
 			 * Pop frame pointer into Register 1
 			 * return instruction with parameter count as argument
 			 */
-			emit(10, 0, local_ctr);
-			emit(28, 1, 0);
+			emit(e_addri_op, 0, local_ctr);
+			emit(e_popr_op, 1, 0);
 		}
 		ENDPROC_TOKEN	
 		{
 		
 			//emitting stop_op if at the end of main
 			if(!strcmp(proc_name, "main")){
-				emit(36, 0, 0);
+				emit(e_stop_op, 0, 0);
 			}else{
 				//emit a return
-				emit(35, param_ctr, 0);	
+				emit(e_ret_op, param_ctr, 0);	
 			}
 		};
 
@@ -185,15 +185,15 @@ assignment: variable EQUAL_TOKEN arithmetic_expression
 	    {
 		//popping variable address and value
 		//moving value into variable address
-	 	emit(27, 500, 0);
-		emit(27, 501, 0);
-		emit(4, 501, 500); 
+	 	emit(e_popd_op, 500, 0);
+		emit(e_popd_op, 501, 0);
+		emit(e_mit_op, 501, 500); 
 	    };
 
 conditional: IF_TOKEN boolean_expression
 	     {
 		
-	     	emit(27, 500, 0); //pop top of stack
+	     	emit(e_popd_op, 500, 0); //pop top of stack
 		$<ival>2 = cs_pointer; //save address for backpatching
 		emit(999, 999, 999); // emit dummy instuction for backpatching
              }
@@ -202,12 +202,12 @@ conditional: IF_TOKEN boolean_expression
 	     	$<ival>4 = cs_pointer;
 	        emit(999, 999, 999);
 		//if boolean_expression is false, jump here
-		backpatch($<ival>2, 18, cs_pointer, 500); 
+		backpatch($<ival>2, e_beq_op, cs_pointer, 500); 
 	     }
 	     else_clause
 	     {
 		//jump over the else if boolean_expression is true
-             	backpatch($<ival>4, 17, cs_pointer, 0);
+             	backpatch($<ival>4, e_b_op, cs_pointer, 0);
 	     }
              ENDIF_TOKEN;
 
@@ -222,16 +222,16 @@ while_loop: WHILE_TOKEN
 	    }
 	    boolean_expression
 	    {
-		emit(27, 500, 0);
+		emit(e_popd_op, 500, 0);
 		$<ival>3 = cs_pointer;
 		emit(999, 999, 999);	    
 	    } 
 	    statement_list
             {
 		//if boolean_expression is false exit the loop
-            	backpatch($<ival>3, 18, cs_pointer+3, 500);
+            	backpatch($<ival>3, e_beq_op, cs_pointer+3, 500);
 		//if boolean_expression is true, keep looping
-		emit(17, $<ival>1, 0);
+		emit(e_b_op, $<ival>1, 0);
             }
             ENDWHILE_TOKEN;
 
@@ -242,11 +242,11 @@ do_loop: DO_TOKEN
 	 } 
 	 statement_list ENDO_TOKEN WHILE_TOKEN boolean_expression
 	 {
-	 	emit(27, 500, 0);
+	 	emit(e_popd_op, 500, 0);
 		//if boolean_expression is false exit the loop
-		emit(18, cs_pointer+6, 500);
+		emit(e_beq_op, cs_pointer+6, 500);
 		//if boolean_expression is true keep looping
-		emit(17, $<ival>1, 0);
+		emit(e_b_op, $<ival>1, 0);
 	 };
 
 io: read_statement | write_statement | line_statement;
@@ -261,7 +261,7 @@ call: ID_TOKEN LPAREN_TOKEN actual_parameters
 	entry = lookup($<strval>1);
 	if(entry != NULL && !strcmp(entry->type, "procedure")){
 		if($<ival>3 == entry->size){
-			emit(34, entry->location, 0);
+			emit(e_call_op, entry->location, 0);
 		}else{
 			printf("%d %d\n", $<ival>3, entry->size);
 			yyerror("Procedure called with wrong amount of params");
@@ -278,7 +278,7 @@ call: ID_TOKEN LPAREN_TOKEN actual_parameters
 return_value: RETVAL_TOKEN arithmetic_expression
 	      {
 		 // pop top of stack into Register 2
-		emit(28, 2, 0);
+		emit(e_popr_op, 2, 0);
 	      };
 
 actual_parameters: parameter_list 
@@ -302,22 +302,22 @@ parameter_list: parameter_list COMMA_TOKEN arithmetic_expression
 quantity: variable
 	  {
 		//pushing variable address onto stack
-		emit(27, 500, 0);
-		emit(3, 500, 500);
-		emit(24, 500, 0); 
+		emit(e_popd_op, 500, 0);
+		emit(e_mif_op, 500, 500);
+		emit(e_pushd_op, 500, 0); 
 	  } 
 	  | INT_TOKEN 
 	  {
-	  	emit(26, $<ival>1, 0);
+	  	emit(e_pushi_op, $<ival>1, 0);
 	  }
 	  | call 
 	  {
 		// push the value in register 2 onto stack
-		emit(25, 2, 0);
+		emit(e_pushr_op, 2, 0);
 	  }
 	  | CHAR_TOKEN
 	  {
-	  	emit(26, $<ival>1, 0);
+	  	emit(e_pushi_op, $<ival>1, 0);
 	  };
 
 variable: ID_TOKEN 
@@ -341,19 +341,19 @@ variable: ID_TOKEN
 		if(entry != NULL){
 			if(!strcmp(entry->type, "local_variable")){
 		       		location = entry->location;
-				emit(7, 500, 1);
-				emit(2, 501, location);
-				emit(11, 500, 501);
-				emit(24, 500, 0);
+				emit(e_str_op, 500, 1);
+				emit(e_mvi_op, 501, location);
+				emit(e_sub_op, 500, 501);
+				emit(e_pushd_op, 500, 0);
 
 			}else if(!strcmp(entry->type, "parameter")){
 				//Looking up parameter passed into function
 				offset = (param_ctr - entry->location + 2);
-				emit(7, 500, 1);
-				emit(2, 501, offset);
-				emit(9, 500, 501);
+				emit(e_str_op, 500, 1);
+				emit(e_mvi_op, 501, offset);
+				emit(e_add_op, 500, 501);
 				//emit(3, 500, 500);
-				emit(24, 500, 0);
+				emit(e_pushd_op, 500, 0);
 			}
 				
                 }else{
@@ -362,7 +362,7 @@ variable: ID_TOKEN
                         if(entry != NULL){
                                if(!strcmp(entry->type, "variable")){
 					location = entry->location;
-			       		emit(26, location, 0);
+			       		emit(e_pushi_op, location, 0);
 			       }
                         }
 
@@ -383,7 +383,7 @@ variable: ID_TOKEN
                        if(!strcmp(entry->type, "array")){
 		       		location = entry->location;
 				//ARRAY BASE LOCATION PUSHED
-				emit(26, location, 0);
+				emit(e_pushi_op, location, 0);
 			}
 		}
        		if(entry == NULL){
@@ -393,12 +393,12 @@ variable: ID_TOKEN
 	  LBRACE_TOKEN arithmetic_expression
 	  {
 		//POP the base address and offset
-	 	emit(27, 501, 0);
-		emit(27, 500, 0);
+	 	emit(e_popd_op, 501, 0);
+		emit(e_popd_op, 500, 0);
 		//Add offset to base address
-		emit(9, 500, 501);
+		emit(e_add_op, 500, 501);
 		//push location+offset
-		emit(24, 500, 0);
+		emit(e_pushd_op, 500, 0);
 		
 	  } RBRACE_TOKEN;
 
@@ -406,9 +406,9 @@ read_statement: READ_TOKEN LPAREN_TOKEN variable RPAREN_TOKEN
 		{
 				
 			//the geti operation
-			emit(27, 500, 0);
-			emit(32, 501, 0);
-			emit(4, 500, 501);
+			emit(e_popd_op, 500, 0);
+			emit(e_geti_op, 501, 0);
+			emit(e_mit_op, 500, 501);
 	
 		}
 		| READSTR_TOKEN LPAREN_TOKEN ID_TOKEN RPAREN_TOKEN
@@ -430,12 +430,12 @@ read_statement: READ_TOKEN LPAREN_TOKEN variable RPAREN_TOKEN
 
 write_statement: WRITE_TOKEN LPAREN_TOKEN arithmetic_expression RPAREN_TOKEN
 		 {
-		 	emit(27, 500, 0);
-			emit(29, 500, 0);
+		 	emit(e_popd_op, 500, 0);
+			emit(e_puti_op, 500, 0);
 		 }
 		 | WRITESTR_TOKEN LPAREN_TOKEN STRING_TOKEN
 		 {
-			emit(30, (next_avail + string_space), 0);
+			emit(e_puts_op, (next_avail + string_space), 0);
 			string_space += ($<ival>3 - 1);	 
 		 } 
 		 RPAREN_TOKEN
@@ -450,7 +450,7 @@ write_statement: WRITE_TOKEN LPAREN_TOKEN arithmetic_expression RPAREN_TOKEN
                 	       if(!strcmp(entry->type, "array")){
                 	                location = entry->location;
                 	                //Print string starting at location
-                	                emit(30, location, 0);
+                	                emit(e_puts_op, location, 0);
                 	        }
                 	}
                 	if(entry == NULL){
@@ -462,35 +462,35 @@ write_statement: WRITE_TOKEN LPAREN_TOKEN arithmetic_expression RPAREN_TOKEN
 
 line_statement: LINE_TOKEN
 		{
-			emit(31, 0, 0);
+			emit(e_line_op, 0, 0);
 		};
 
 arithmetic_expression: arithmetic_expression add_operator arithmetic_term
 		       {
-	       	       		emit(27, 501, 0);
-				emit(27, 500, 0);
+	       	       		emit(e_popd_op, 501, 0);
+				emit(e_popd_op, 500, 0);
 				if($<ival>2 == ADD_TOKEN){
-					emit(9, 500, 501);
+					emit(e_add_op, 500, 501);
 				}
 				else if($<ival>2 == SUBTRACT_TOKEN){
-					emit(11, 500, 501);
+					emit(e_sub_op, 500, 501);
 				}
-				emit(24, 500, 0);
+				emit(e_pushd_op, 500, 0);
 			
 		       }
 		       | arithmetic_term;
 
 arithmetic_term: arithmetic_term mult_operator arithmetic_factor 
 		 {
-			emit(27, 501, 0);
-			emit(27, 500, 0);
+			emit(e_popd_op, 501, 0);
+			emit(e_popd_op, 500, 0);
   			if($<ival>2 == MULT_TOKEN){
-                                emit(12, 500, 501);
+                                emit(e_mul_op, 500, 501);
                         }
                         if($<ival>2 == DIV_TOKEN){
-                                emit(13, 500, 501);
+                                emit(e_div_op, 500, 501);
                         }
-			emit(24, 500, 0);
+			emit(e_pushd_op, 500, 0);
 		 }
 		 | arithmetic_factor;
 
@@ -518,10 +518,10 @@ boolean_expression: boolean_expression OR_TOKEN boolean_term
 		    {
 			//pop vals into scratch
 			//Or them, push back onto stack
-		    	emit(27, 500, 0);
-			emit(27, 501, 0);
-			emit(14, 500, 501);
-			emit(24, 500, 0);
+		    	emit(e_popd_op, 500, 0);
+			emit(e_popd_op, 501, 0);
+			emit(e_or_op, 500, 501);
+			emit(e_pushd_op, 500, 0);
 		    }
 		    | boolean_term;
 
@@ -529,10 +529,10 @@ boolean_term: 	boolean_term AND_TOKEN boolean_factor
 		{
 			//pop vals into scratch
 			//And them, push back onto stack
-			emit(27, 500, 0);
-			emit(27, 501, 0);
-			emit(15, 500, 501);
-			emit(24, 500, 0); 
+			emit(e_popd_op, 500, 0);
+			emit(e_popd_op, 501, 0);
+			emit(e_and_op, 500, 501);
+			emit(e_pushd_op, 500, 0); 
 		}
 		| boolean_factor;
 
@@ -540,51 +540,51 @@ boolean_factor:	NOT_TOKEN boolean_atom
 		{
 			//pop value
 			//boolean Not, push back onto stack
-			emit(27, 500, 0);
-			emit(16, 500, 0);
-			emit(24, 500, 0);
+			emit(e_popd_op, 500, 0);
+			emit(e_not_op, 500, 0);
+			emit(e_pushd_op, 500, 0);
 		}
 		| boolean_atom;
 
 boolean_atom: 	LPAREN_TOKEN arithmetic_expression relational_operator 
 		arithmetic_expression RPAREN_TOKEN
 		{
-			emit(27, 501, 0);
-			emit(27, 500, 0);
+			emit(e_popd_op, 501, 0);
+			emit(e_popd_op, 500, 0);
 			//subract values, branch compares to 0 
-			emit(11, 500, 501); 
+			emit(e_sub_op, 500, 501); 
 			// if true, jump 3 lines
 			emit($<ival>3, cs_pointer+9, 500); 
-			emit(26, 0, 0); //push 0 for false
-			emit(17, cs_pointer+6, 0); // jump 2 lines
-			emit(26, 1, 0);	// push 1 for true
+			emit(e_pushi_op, 0, 0); //push 0 for false
+			emit(e_b_op, cs_pointer+6, 0); // jump 2 lines
+			emit(e_pushi_op, 1, 0);	// push 1 for true
 		}
 		| LPAREN_TOKEN boolean_expression RPAREN_TOKEN;
 
 relational_operator: 	EQUAL_TOKEN
 			{
 				//Using parse stack to pass up opcodes
-				$<ival>$ = 18;
+				$<ival>$ = e_beq_op;
 			} 
 			| LT_TOKEN
 			{
-				$<ival>$ = 22;
+				$<ival>$ = e_blt_op;
 			} 
 			| LTEQ_TOKEN 
 			{
-				$<ival>$ = 23;
+				$<ival>$ = e_ble_op;
 			}
 			| GT_TOKEN
 			{
-				$<ival>$ = 20;
+				$<ival>$ = e_bgt_op;
 			} 
 			| GTEQ_TOKEN
 			{
-				$<ival>$ = 21;
+				$<ival>$ = e_bge_op;
 			} 
 			| HASH_TOKEN
 			{
-				$<ival>$ = 19;
+				$<ival>$ = e_bne_op;
 			};
 
 %%
