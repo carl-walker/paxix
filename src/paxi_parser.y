@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "symbol_table.h"
+#include "op_codes.h"
 
 // Global Var declarations
 static int param_ctr = 0;
