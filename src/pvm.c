@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <op_codes.h>
 
 typedef void (*fcnptr)(int, int);
 int* data_store;
@@ -224,26 +225,26 @@ int main(int argc, char* argv[]){
 	int size_cs, string_start, string_space, entry_point;
 	int op_code, arg1, arg2;
 	// putting all the function pointers into the array
-	fcnptr instructions[37];
-	instructions[0] = NULL; instructions[1] = mov_op; 
-	instructions[2] = mvi_op; instructions[3] = mif_op; 
-	instructions[4] = mit_op; instructions[5] = lri_op;
-	instructions[6] = ldr_op; instructions[7] = str_op; 
-	instructions[8] = mvr_op; instructions[9] = add_op; 
-	instructions[10] = addri_op; instructions[11] = sub_op;
-	instructions[12] = mul_op; instructions[13] = div_op; 
-	instructions[14] = or_op; instructions[15] = and_op; 
-	instructions[16] = not_op; instructions[17] = b_op;
-	instructions[18] = beq_op; instructions[19] = bne_op; 
-	instructions[20] = bgt_op; instructions[21] = bge_op;
-	instructions[22] = blt_op; instructions[23] = ble_op;
-	instructions[24] = pushd_op; instructions[25] = pushr_op;
-	instructions[26] = pushi_op; instructions[27] = popd_op; 
-	instructions[28] = popr_op; instructions[29] = puti_op;
-	instructions[30] = puts_op; instructions[31] = line_op; 
-	instructions[32] = geti_op; instructions[33] = gets_op; 
-	instructions[34] = call_op; instructions[35] = ret_op;
-	instructions[36] = stop_op;
+	fcnptr instructions[e_num_of_ops];
+	instructions[e_null] = NULL; instructions[e_mov_op] = mov_op; 
+	instructions[e_mvi_op] = mvi_op; instructions[e_mif_op] = mif_op; 
+	instructions[e_mit_op] = mit_op; instructions[e_lri_op] = lri_op;
+	instructions[e_ldr_op] = ldr_op; instructions[e_str_op] = str_op; 
+	instructions[e_mvr_op] = mvr_op; instructions[e_add_op] = add_op; 
+	instructions[e_addri_op] = addri_op; instructions[e_sub_op] = sub_op;
+	instructions[e_mul_op] = mul_op; instructions[e_div_op] = div_op; 
+	instructions[e_or_op] = or_op; instructions[e_and_op] = and_op; 
+	instructions[e_not_op] = not_op; instructions[e_b_op] = b_op;
+	instructions[e_beq_op] = beq_op; instructions[e_bne_op] = bne_op; 
+	instructions[e_bgt_op] = bgt_op; instructions[e_bge_op] = bge_op;
+	instructions[e_blt_op] = blt_op; instructions[e_ble_op] = ble_op;
+	instructions[e_pushd_op] = pushd_op; instructions[e_pushr_op] = pushr_op;
+	instructions[e_pushi_op] = pushi_op; instructions[e_popd_op] = popd_op; 
+	instructions[e_popr_op] = popr_op; instructions[e_puti_op] = puti_op;
+	instructions[e_puts_op] = puts_op; instructions[e_line_op] = line_op; 
+	instructions[e_geti_op] = geti_op; instructions[e_gets_op] = gets_op; 
+	instructions[e_call_op] = call_op; instructions[e_ret_op] = ret_op;
+	instructions[e_stop_op] = stop_op;
 	
 	//Checking if the file name was given as command line arg
 	if(argc < 2){

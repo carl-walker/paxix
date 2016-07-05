@@ -7,6 +7,9 @@
 *.o
 *.tab.*
 *.yy.c
+paxi_parser.c
+paxi_parser.h
+paxi_scanner.c
 
 # Ignore executables
 paxic
@@ -25,4 +28,7 @@ install-sh
 missing
 stamp-h1
 ylwrap
+
+#Ignore .pvm files
+*.pvm
 

@@ -618,7 +618,8 @@ void backpatch(int address, int opcode, int arg1, int arg2){
 char* mangle(char* proc, char* var){
         int i = 0;
         int len = 0;
-
+	
+	//TODO: use strl
         while(*(var + len) != '\0'){
                 len++;
         }

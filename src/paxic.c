@@ -42,8 +42,9 @@ int main(int argc, char** argv){
 	output_file[name_len - 1] = '\0';
 	
 	//innitialize codestore
-	code_store =(int*) malloc(sizeof(int)*300);			
-	yyparse();
+	code_store =(int*) malloc(sizeof(int)*300);
+
+	yyparse(); // something buggy going on here...
 	output = fopen(output_file, "wb");
 
 	int i;
